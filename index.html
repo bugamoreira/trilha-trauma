@@ -473,7 +473,6 @@ body {
 
 <div id="r1p" class="r1-result">
     <div class="al al-r" style="font-weight:700;">ABRIR TRILHA — encaminhar imediatamente para RESGATE</div>
-    <button class="btn btn-g" onclick="goR(2)">Avançar para R2 — Resgatar</button>
 </div>
 <div id="r1n" class="r1-result">
     <div class="al al-y">Critérios não preenchidos. Reavaliar clinicamente.<br>Critério: Mecanismo E/OU Injúria grave + Sinais vitais alterados.</div>
@@ -523,8 +522,6 @@ body {
     <li>Oximetria, capnografia, gasometria venosa</li>
     </ul>
 
-    <button class="btn btn-b" onclick="go('s-efast')" style="font-size:12px; padding:10px; margin: 8px 0;">Abrir E-FAST</button>
-
     <div class="lb">Condutas:</div>
     <ul class="bl">
     <li><span class="tag tag-r">Pneumotórax hipertensivo</span> — Descomprimir imediatamente (punção de alívio ou toracostomia digital, seguida de drenagem)</li>
@@ -539,6 +536,8 @@ body {
 <div class="cc-bd">
     <div class="lb">Monitorizar:</div>
     <ul class="bl"><li>ECG, FC e PA contínuos</li></ul>
+
+    <button class="btn btn-b" onclick="go('s-efast')" style="font-size:12px; padding:10px; margin: 8px 0;">Abrir E-FAST / POCUS</button>
 
     <div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false">Pacote laboratorial — HUGO <span class="arrow">›</span></div>
     <div class="cc-bd">
@@ -598,7 +597,7 @@ body {
 <div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-b">D</span> Glasgow e pupilas <span class="arrow">›</span></div>
 <div class="cc-bd">
     <ul class="bl">
-    <li>Reavaliar Glasgow (3 a 15)</li>
+    <li>Avaliar Glasgow (3 a 15)</li>
     <li>Pupilas: isocoria e reflexo fotomotor</li>
     <li>Registrar em prontuário</li>
     </ul>
@@ -671,6 +670,11 @@ body {
         <tr data-pts="1"><td>1</td><td data-col="gcs">4–5</td><td data-col="pas">1–49</td><td data-col="fr">1–5</td></tr>
         <tr data-pts="0" class="rts-low"><td>0</td><td data-col="gcs">3</td><td data-col="pas">0</td><td data-col="fr">0</td></tr>
     </table>
+
+    <div class="lb" style="margin-top: 12px;">Conduta conforme RTS:</div>
+    <div class="al al-g" style="font-size:12px; margin: 6px 0;"><strong>RTS &gt; 7</strong> — Avaliar clinicamente. Considerar necessidade de transferência.</div>
+    <div class="al al-y" style="font-size:12px; margin: 6px 0;"><strong>RTS 4–7</strong> — Solicitar transferência para centro de referência em trauma ou UTI.</div>
+    <div class="al al-r" style="font-size:12px; margin: 6px 0;"><strong>RTS &lt; 4</strong> — Transferir <strong>IMEDIATAMENTE</strong> para centro de referência em trauma ou UTI.</div>
 </div>
 
 <div class="lb">Necessidade de avaliação por especialista:</div>
@@ -820,7 +824,13 @@ body {
 </div></div>
 
 <div class="al al-y" style="font-size:12px; margin-top: 8px;">
-    <strong>Limitações:</strong> sensibilidade aproximada de 85%, especificidade &gt; 90%. Necessário mínimo de 200 a 250 ml de líquido para detecção. E-FAST negativo não exclui lesão — considerar exames seriados e tomografia. Não atrasar ressuscitação para realizar o exame.
+    <strong>Limitações:</strong>
+    <ul class="bl" style="margin-top: 6px; color: inherit;">
+    <li>Sensibilidade ~85%, especificidade &gt; 90%</li>
+    <li>Mínimo de 200–250 ml de líquido para detecção</li>
+    <li>E-FAST negativo <strong>não exclui lesão</strong> — considerar exames seriados e tomografia</li>
+    <li>Não atrasar ressuscitação para realizar o exame</li>
+    </ul>
 </div>
 <button class="btn btn-o" onclick="goBack()">Voltar</button>
 </div>
