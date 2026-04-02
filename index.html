@@ -1296,6 +1296,94 @@ function calcICx(prefix) {
         el.textContent = '< 0,7 — Dentro da normalidade.';
     }
 }
+
+// ========== ANALYTICS (Supabase) ==========
+const SB_URL = 'https://kuctmyugghvkldwsbqsz.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1Y3RteXVnZ2h2a2xkd3NicXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwOTIxNzAsImV4cCI6MjA5MDY2ODE3MH0.NeRWPlBOkBZc-W2ciIHGd-qjjDAVOi4P3y6GCT6nF8M';
+let sessionId = null;
+const sessionStart = Date.now();
+
+function sbPost(table, data) {
+    fetch(SB_URL + '/rest/v1/' + table, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json',
+            'apikey': SB_KEY,
+            'Authorization': 'Bearer ' + SB_KEY,
+            'Prefer': 'return=representation'
+        }, body: JSON.stringify(data)
+    }).then(r => r.json()).then(d => {
+        if (table === 'sessions' && d[0]?.id) sessionId = d[0].id;
+    }).catch(() => {});
+}
+
+function trackEvent(type, screenId, data) {
+    if (!sessionId) return;
+    sbPost('events', { session_id: sessionId, event_type: type, screen_id: screenId, event_data: data || null });
+}
+
+// Iniciar sessão anônima
+sbPost('sessions', {
+    device_info: {
+        ua: navigator.userAgent,
+        w: screen.width, h: screen.height,
+        touch: 'ontouchstart' in window
+    }
+});
+
+// Interceptar navegação para tracking
+const _origGo = go;
+go = function(id) {
+    trackEvent('screen_view', id);
+    return _origGo(id);
+};
+
+// Interceptar calculadoras
+const _origRTS = calcRTS;
+calcRTS = function(prefix) {
+    _origRTS(prefix);
+    const ids = prefix === 'r4'
+        ? { g: 'rts-gcs', p: 'rts-pas', f: 'rts-fr', v: 'rts-val' }
+        : { g: 'c-gcs', p: 'c-pas', f: 'c-fr', v: 'c-val' };
+    trackEvent('calculator_use', prefix === 'r4' ? 's-r4' : 's-calcs', {
+        calc: 'RTS',
+        gcs: document.getElementById(ids.g)?.value,
+        pas: document.getElementById(ids.p)?.value,
+        fr: document.getElementById(ids.f)?.value,
+        result: document.getElementById(ids.v)?.textContent
+    });
+};
+
+const _origIC = calcICx;
+calcICx = function(prefix) {
+    _origIC(prefix);
+    trackEvent('calculator_use', prefix === 'ic' ? 's-r2' : 's-calcs', {
+        calc: 'IC',
+        fc: document.getElementById(prefix + '-fc')?.value,
+        pas: document.getElementById(prefix + '-pas')?.value,
+        result: document.getElementById(prefix + '-val')?.textContent
+    });
+};
+
+// Registrar fim de sessão ao sair
+window.addEventListener('beforeunload', () => {
+    const dur = Math.round((Date.now() - sessionStart) / 1000);
+    if (sessionId) {
+        trackEvent('session_end', null, {
+            duration_seconds: dur,
+            population: pop,
+            completed_r5: visited.has('s-r5'),
+            screens_visited: Array.from(visited)
+        });
+    }
+});
+
+// Heartbeat a cada 60s para sessões longas
+setInterval(() => {
+    if (sessionId) {
+        const dur = Math.round((Date.now() - sessionStart) / 1000);
+        trackEvent('heartbeat', null, { duration_seconds: dur });
+    }
+}, 300000);
 </script>
 </body>
 </html>
