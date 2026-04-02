@@ -92,11 +92,12 @@ body {
     border-color: var(--verde-hugo);
 }
 .gc-icon {
-    width: 40px; height: 40px; border-radius: 10px;
+    width: 48px; height: 48px; border-radius: 14px;
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 13px; color: #fff; margin-bottom: 6px; font-weight: 700;
+    font-size: 13px; color: #fff; margin-bottom: 8px; font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
-.gc-icon svg { width: 22px; height: 22px; }
+.gc-icon svg { width: 26px; height: 26px; }
 .gc-title { font-size: 13px; font-weight: 700; color: var(--texto); }
 .gc-main .gc-title { color: #fff; font-size: 15px; }
 .gc-sub { font-size: 11px; color: var(--texto-sec); margin-top: 2px; }
@@ -319,42 +320,42 @@ body {
         <div class="gc-sub">Fluxo completo R1 a R5</div>
     </div>
     <div class="gc" onclick="go('s-nexus')">
-        <div class="gc-icon" style="background: #374151;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 2v6M12 22v-6M8 8c0-2 2-4 4-4s4 2 4 4M8 16c0 2 2 4 4 4s4-2 4-4M8 8v8M16 8v8"/></svg></div>
+        <div class="gc-icon" style="background: #374151;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 00-3 3v2a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M9 9v2c0 1.5-.5 3-1 4"/><path d="M15 9v2c0 1.5.5 3 1 4"/><rect x="8" y="15" width="8" height="3" rx="1"/><path d="M10 18v4"/><path d="M14 18v4"/></svg></div>
         <div class="gc-title">NEXUS</div>
         <div class="gc-sub">Coluna cervical</div>
     </div>
     <div class="gc" onclick="go('s-calcs')">
-        <div class="gc-icon" style="background: var(--verde-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg></div>
+        <div class="gc-icon" style="background: var(--verde-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 10h2"/><path d="M14 10h2"/><path d="M8 14h2"/><path d="M14 14h2"/><path d="M8 18h8"/></svg></div>
         <div class="gc-title">Calculadoras</div>
         <div class="gc-sub">RTS e Índice de Choque</div>
     </div>
     <div class="gc" onclick="go('s-atb')">
-        <div class="gc-icon" style="background: var(--laranja);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M9 3h6v4a3 3 0 01-3 3 3 3 0 01-3-3V3z"/><line x1="12" y1="10" x2="12" y2="21"/><line x1="8" y1="14" x2="16" y2="14"/></svg></div>
+        <div class="gc-icon" style="background: var(--laranja);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11h-4a1 1 0 00-1 1v1a1 1 0 001 1h2a1 1 0 011 1v1a1 1 0 01-1 1h-4"/><path d="M15 7v4"/><path d="M15 16v1"/><circle cx="7" cy="12" r="4"/><path d="M7 10v4"/><path d="M5 12h4"/></svg></div>
         <div class="gc-title">ATB profilaxia</div>
         <div class="gc-sub">Fratura exposta e tétano</div>
     </div>
     <div class="gc" onclick="go('s-efast')">
-        <div class="gc-icon" style="background: var(--amarelo-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8"/><line x1="12" y1="18" x2="12" y2="22"/><path d="M7 10c2-3 4-3 5 0s3 3 5 0"/></svg></div>
+        <div class="gc-icon" style="background: var(--amarelo-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3"/><path d="M8 15v1a6 6 0 006 6 6 6 0 006-6v-4"/><path d="M22 10 A2 2 0 0020 8"/></svg></div>
         <div class="gc-title">E-FAST / POCUS</div>
         <div class="gc-sub">5 janelas + achados</div>
     </div>
     <div class="gc" onclick="go('s-med')">
-        <div class="gc-icon" style="background: var(--vermelho-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4.5 12.5l6-6a4.24 4.24 0 016 6l-6 6a4.24 4.24 0 01-6-6z"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+        <div class="gc-icon" style="background: var(--vermelho-status);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 20H4a2 2 0 01-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 011.66.9l.82 1.2a2 2 0 001.66.9H20a2 2 0 012 2v2"/><circle cx="18" cy="16" r="4"/><path d="M18 14v4"/><path d="M16 16h4"/></svg></div>
         <div class="gc-title">Medicações</div>
         <div class="gc-sub">Analgesia e sedação</div>
     </div>
     <div class="gc" onclick="go('s-tc')">
-        <div class="gc-icon" style="background: #6366F1;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="3" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/></svg></div>
+        <div class="gc-icon" style="background: #6366F1;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/><circle cx="12" cy="12" r="3"/></svg></div>
         <div class="gc-title">Critérios de TC</div>
         <div class="gc-sub">Corpo inteiro</div>
     </div>
     <div class="gc" onclick="go('s-gest')">
-        <div class="gc-icon" style="background: var(--roxo);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="3"/><path d="M12 8c-2 0-3 2-3 5 0 2 .5 4 1.5 5.5L12 22l1.5-3.5C14.5 17 15 15 15 13c0-3-1-5-3-5z"/></svg></div>
+        <div class="gc-icon" style="background: var(--roxo);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="2.5"/><path d="M14 9c0 0 2 1 2 5s-1 6-1 8"/><path d="M10 9c0 0-2 1-2 5s1 6 1 8"/><path d="M9 14h6"/></svg></div>
         <div class="gc-title">Gestante</div>
         <div class="gc-sub">CODE, Rh, POCUS fetal</div>
     </div>
     <div class="gc" onclick="go('s-lab')">
-        <div class="gc-icon" style="background: var(--azul-hugo);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M9 3h6M10 3v7l-4 8a1 1 0 001 2h10a1 1 0 001-2l-4-8V3"/><path d="M8 14h8"/></svg></div>
+        <div class="gc-icon" style="background: var(--azul-hugo);"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6"/><path d="M10 2v7.527a2 2 0 01-.211.896L4.72 20.577A1 1 0 005.596 22h12.808a1 1 0 00.876-1.423l-5.07-10.154A2 2 0 0114 9.527V2"/><path d="M8.5 14h7"/></svg></div>
         <div class="gc-title">Laboratório</div>
         <div class="gc-sub">Pacote HUGO</div>
     </div>
