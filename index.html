@@ -838,7 +838,7 @@ body {
 <div class="scr" id="s-atb">
 <div class="st">ATB profilaxia</div>
 
-<div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-r">1</span> Fratura exposta — Protocolo SCIH <span class="arrow">›</span></div>
+<div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-r">1</span> Fratura exposta <span class="arrow">›</span></div>
 <div class="cc-bd">
     <div class="al al-y" style="font-size:12px;"><strong>Janela terapêutica crítica:</strong> administrar antibióticos na primeira hora após a admissão.</div>
 
@@ -907,17 +907,20 @@ body {
 
 <div class="atb-section">3. Trauma penetrante — antibioticoprofilaxia</div>
 <div class="al al-y" style="font-size:12px; margin: 8px 0 10px;">
-    <strong>Atenção:</strong> o item "Trauma abdominal penetrante" está em alinhamento com o SCIH quanto à escolha do antimicrobiano. Os demais esquemas estão validados.
-</div>
-
-<div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-y">⚠</span> Trauma abdominal penetrante <span class="arrow">›</span></div>
+<div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-b">Abdome</span> Trauma abdominal penetrante <span class="arrow">›</span></div>
 <div class="cc-bd">
-    <div class="al al-y" style="font-size:12px;">
-        <strong>Em discussão com o SCIH.</strong><br>
-        O manual farmacêutico indica cefoxitina (cobertura anaeróbia). A padronização institucional com cefazolina está sendo avaliada — possível necessidade de associar metronidazol para cobertura de anaeróbios.<br><br>
-        Consulte o protocolo institucional vigente até a definição.
+    <div class="drug-block">
+        <div class="drug-name">Cefazolina</div>
+        <div class="drug-dose">Ataque: 2 g EV | Manutenção: 2 g EV 4/4 h</div>
+        <div class="drug-dur">Criança: 1 g EV 8/8 h</div>
+    </div>
+    <div class="drug-block">
+        <div class="drug-name">Metronidazol</div>
+        <div class="drug-dose">500 mg EV | Manutenção: 500 mg EV 6/6 h</div>
+        <div class="drug-dur">Criança: 500 mg EV 8/8 h | Duração: 24 h</div>
     </div>
     <div class="note">Aplica-se também a: trauma abdominal fechado com indicação cirúrgica e trauma tóraco-abdominal penetrante (com ou sem lesão de víscera oca, inclusive cólon).</div>
+    <div class="note">Alergia a β-lactâmicos: clindamicina 900 mg EV intraoperatório + 600 mg EV 8/8 h POi + metronidazol 500 mg EV 8/8 h.</div>
 </div></div>
 
 <div class="cc"><div class="cc-hd" onclick="tog(this)" role="button" tabindex="0" aria-expanded="false"><span class="tag tag-b">Tórax</span> Torácico penetrante / fechado com dreno <span class="arrow">›</span></div>
@@ -1126,6 +1129,8 @@ function go(id) {
     }
     document.getElementById('mb')?.scrollTo(0, 0);
     window.scrollTo(0, 0);
+    // Garantir scroll após reflow do DOM
+    requestAnimationFrame(() => window.scrollTo(0, 0));
 }
 
 function goR(n) { go('s-r' + n); }
@@ -1169,13 +1174,18 @@ function selPop(p) {
 function tog(el) {
     const bd = el.nextElementSibling;
     const arrow = el.querySelector('.arrow');
-    const scr = el.closest('.scr');
+    const parent = el.closest('.cc-bd') || el.closest('.scr');
     const wasOpen = bd.classList.contains('show');
 
-    // Fechar todos e resetar aria
-    scr.querySelectorAll('.cc-bd').forEach(b => b.classList.remove('show'));
-    scr.querySelectorAll('.arrow').forEach(a => a.classList.remove('open'));
-    scr.querySelectorAll('.cc-hd').forEach(h => h.setAttribute('aria-expanded', 'false'));
+    // Fechar apenas irmãos no mesmo nível (não ancestrais)
+    parent.querySelectorAll(':scope > .cc > .cc-bd, :scope > .cc > .cc-hd').forEach(node => {
+        if (node.classList.contains('cc-bd')) node.classList.remove('show');
+        if (node.classList.contains('cc-hd')) {
+            node.setAttribute('aria-expanded', 'false');
+            const a = node.querySelector('.arrow');
+            if (a) a.classList.remove('open');
+        }
+    });
 
     if (!wasOpen) {
         bd.classList.add('show');
