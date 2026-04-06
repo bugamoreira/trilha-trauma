@@ -199,28 +199,30 @@ body {
 .calc-label { font-size: 15px; font-weight: 700; color: var(--texto); margin-bottom: 2px; }
 .calc-desc { font-size: 12px; color: var(--texto-sec); font-style: italic; margin-bottom: 14px; line-height: 1.4; }
 .nrow {
-    display: flex; align-items: center; gap: 10px;
-    margin: 8px 0; padding: 6px 0;
+    display: inline-flex; flex-direction: column; align-items: center;
+    margin: 4px 6px; padding: 8px 12px;
+    background: var(--fundo-sec); border-radius: 12px;
 }
 .nrow-label {
-    width: 36px; text-align: right; font-weight: 700;
-    font-size: 13px; color: var(--azul-hugo);
+    font-weight: 700; font-size: 11px; color: var(--azul-hugo);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
 }
 .ni {
-    width: 68px; height: 40px; border: 2px solid var(--borda);
-    border-radius: 10px; text-align: center; font-size: 17px;
+    width: 72px; height: 44px; border: 2px solid var(--borda);
+    border-radius: 10px; text-align: center; font-size: 18px;
     font-weight: 700; color: var(--texto); background: var(--fundo);
     font-family: inherit; transition: border-color 0.15s;
     -moz-appearance: textfield;
 }
+.ni::placeholder { color: var(--texto-sec); font-weight: 400; font-size: 14px; }
 .ni::-webkit-outer-spin-button, .ni::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .ni:focus { outline: none; border-color: var(--azul-hugo); box-shadow: 0 0 0 3px rgba(13,79,139,0.12); }
 .nrow-cod {
-    margin-left: auto;
-    font-size: 11px; font-weight: 600; color: var(--azul-hugo);
-    background: #EFF6FF; padding: 3px 8px; border-radius: 6px;
-    white-space: nowrap;
+    font-size: 11px; font-weight: 700; color: var(--azul-hugo);
+    background: #EFF6FF; padding: 2px 8px; border-radius: 6px;
+    margin-top: 4px; white-space: nowrap;
 }
+.calc-inputs { display: flex; justify-content: center; flex-wrap: wrap; margin: 8px 0; }
 .nrow-unit {
     font-size: 11px; color: var(--texto-sec); font-weight: 600;
 }
@@ -242,6 +244,18 @@ body {
 }
 .pop-card:active { transform: scale(0.98); }
 .pop-card.sel { border-color: var(--azul-hugo); background: #EFF6FF; }
+
+/* Calc tabs */
+.calc-tabs { display: flex; gap: 0; margin-bottom: 14px; border-bottom: 2px solid var(--borda); }
+.calc-tab {
+    flex: 1; padding: 12px; text-align: center; font-weight: 700; font-size: 14px;
+    color: var(--texto-sec); background: none; border: none; cursor: pointer;
+    border-bottom: 3px solid transparent; transition: all 0.2s; font-family: inherit;
+    min-height: 44px;
+}
+.calc-tab.active { color: var(--azul-hugo); border-bottom-color: var(--azul-hugo); }
+.calc-panel { display: none; }
+.calc-panel.active { display: block; }
 
 /* Logo area */
 .logo-area {
@@ -557,19 +571,21 @@ body {
     <div class="calc">
         <div class="calc-label">Índice de Choque (FC / PAS)</div>
         <div class="calc-desc">Normal &lt; 0,7. ≥ 0,8 sugere necessidade de recursos.</div>
+        <div class="calc-inputs">
         <div class="nrow">
             <span class="nrow-label">FC</span>
-            <input class="ni" type="number" inputmode="numeric" id="ic-fc" value="100" min="30" max="220" oninput="calcICx('ic')" aria-label="Frequência cardíaca">
-            <span class="nrow-cod">bpm</span>
+            <input class="ni" type="number" inputmode="numeric" id="ic-fc" placeholder="bpm" min="30" max="220" oninput="calcICx('ic')" aria-label="Frequência cardíaca">
+            <span class="nrow-cod" id="ic-cod-fc"></span>
         </div>
         <div class="nrow">
             <span class="nrow-label">PAS</span>
-            <input class="ni" type="number" inputmode="numeric" id="ic-pas" value="120" min="30" max="260" oninput="calcICx('ic')" aria-label="Pressão arterial sistólica">
-            <span class="nrow-cod">mmHg</span>
+            <input class="ni" type="number" inputmode="numeric" id="ic-pas" placeholder="mmHg" min="30" max="260" oninput="calcICx('ic')" aria-label="Pressão arterial sistólica">
+            <span class="nrow-cod" id="ic-cod-pas"></span>
+        </div>
         </div>
         <div class="calc-divider"></div>
-        <div class="calc-result" id="ic-val">IC = 0,83</div>
-        <div id="ic-al" class="al al-r" style="font-size:12px;">≥ 0,8 — Considere acionar banco de sangue e recursos adicionais (cirurgia, UTI, radiologia intervencionista).</div>
+        <div class="calc-result" id="ic-val">IC = —</div>
+        <div id="ic-al" class="al al-b" style="font-size:12px;">Preencha FC e PAS para calcular.</div>
     </div>
 
     <div class="lb">PAS alvo:</div>
@@ -644,24 +660,26 @@ body {
 <div class="calc">
     <div class="calc-label">RTS (T-RTS) — Revised Trauma Score (0 a 12)</div>
     <div class="calc-desc">Soma simples dos valores codificados (0–4) de Glasgow, PAS e FR. Champion et al., 1989.</div>
+    <div class="calc-inputs">
     <div class="nrow">
         <span class="nrow-label">GCS</span>
-        <input class="ni" type="number" inputmode="numeric" id="rts-gcs" value="15" min="3" max="15" oninput="calcRTS('r4')" aria-label="Glasgow">
-        <span class="nrow-cod" id="rts-gc">= 4 pts</span>
+        <input class="ni" type="number" inputmode="numeric" id="rts-gcs" placeholder="3–15" min="3" max="15" oninput="calcRTS('r4')" aria-label="Glasgow">
+        <span class="nrow-cod" id="rts-gc"></span>
     </div>
     <div class="nrow">
         <span class="nrow-label">PAS</span>
-        <input class="ni" type="number" inputmode="numeric" id="rts-pas" value="120" min="0" max="300" oninput="calcRTS('r4')" aria-label="Pressão arterial sistólica">
-        <span class="nrow-cod" id="rts-pc">= 4 pts</span>
+        <input class="ni" type="number" inputmode="numeric" id="rts-pas" placeholder="mmHg" min="0" max="300" oninput="calcRTS('r4')" aria-label="Pressão arterial sistólica">
+        <span class="nrow-cod" id="rts-pc"></span>
     </div>
     <div class="nrow">
         <span class="nrow-label">FR</span>
-        <input class="ni" type="number" inputmode="numeric" id="rts-fr" value="18" min="0" max="60" oninput="calcRTS('r4')" aria-label="Frequência respiratória">
-        <span class="nrow-cod" id="rts-fc">= 4 pts</span>
+        <input class="ni" type="number" inputmode="numeric" id="rts-fr" placeholder="irpm" min="0" max="60" oninput="calcRTS('r4')" aria-label="Frequência respiratória">
+        <span class="nrow-cod" id="rts-fc"></span>
+    </div>
     </div>
     <div class="calc-divider"></div>
-    <div class="calc-result" id="rts-val">RTS = 12</div>
-    <div id="rts-al" class="al al-g" style="font-size:12px;">RTS &gt; 7 — Considere avaliação clínica e necessidade de transferência.</div>
+    <div class="calc-result" id="rts-val">RTS = —</div>
+    <div id="rts-al" class="al al-b" style="font-size:12px;">Preencha GCS, PAS e FR para calcular.</div>
     <table class="rts-ref" id="rts-ref-r4" style="margin-top: 10px;">
         <tr><th>Pts</th><th>GCS</th><th>PAS (mmHg)</th><th>FR (irpm)</th></tr>
         <tr data-pts="4" class="rts-hi"><td>4</td><td data-col="gcs">13–15</td><td data-col="pas">&gt; 89</td><td data-col="fr">10–29</td></tr>
@@ -709,15 +727,22 @@ body {
 <!-- CALCULADORAS -->
 <div class="scr" id="s-calcs">
 <div class="st">Calculadoras</div>
+<div class="calc-tabs">
+    <button class="calc-tab active" onclick="showCalcTab('rts')">RTS</button>
+    <button class="calc-tab" onclick="showCalcTab('ic')">Índice de Choque</button>
+</div>
+<div class="calc-panel active" id="tab-rts">
 <div class="calc">
     <div class="calc-label">RTS (T-RTS) — 0 a 12</div>
     <div class="calc-desc">Soma simples dos valores codificados (0–4) de Glasgow, PAS e FR.</div>
-    <div class="nrow"><span class="nrow-label">GCS</span><input class="ni" type="number" inputmode="numeric" id="c-gcs" value="15" min="3" max="15" oninput="calcRTS('c')" aria-label="Glasgow"><span class="nrow-cod" id="c-gc">= 4 pts</span></div>
-    <div class="nrow"><span class="nrow-label">PAS</span><input class="ni" type="number" inputmode="numeric" id="c-pas" value="120" min="0" max="300" oninput="calcRTS('c')" aria-label="Pressão arterial sistólica"><span class="nrow-cod" id="c-pc">= 4 pts</span></div>
-    <div class="nrow"><span class="nrow-label">FR</span><input class="ni" type="number" inputmode="numeric" id="c-fr" value="18" min="0" max="60" oninput="calcRTS('c')" aria-label="Frequência respiratória"><span class="nrow-cod" id="c-fc">= 4 pts</span></div>
+    <div class="calc-inputs">
+    <div class="nrow"><span class="nrow-label">GCS</span><input class="ni" type="number" inputmode="numeric" id="c-gcs" placeholder="3–15" min="3" max="15" oninput="calcRTS('c')" aria-label="Glasgow"><span class="nrow-cod" id="c-gc"></span></div>
+    <div class="nrow"><span class="nrow-label">PAS</span><input class="ni" type="number" inputmode="numeric" id="c-pas" placeholder="mmHg" min="0" max="300" oninput="calcRTS('c')" aria-label="Pressão arterial sistólica"><span class="nrow-cod" id="c-pc"></span></div>
+    <div class="nrow"><span class="nrow-label">FR</span><input class="ni" type="number" inputmode="numeric" id="c-fr" placeholder="irpm" min="0" max="60" oninput="calcRTS('c')" aria-label="Frequência respiratória"><span class="nrow-cod" id="c-fc"></span></div>
+    </div>
     <div class="calc-divider"></div>
-    <div class="calc-result" id="c-val">RTS = 12</div>
-    <div id="c-al" class="al al-g" style="font-size:12px;">RTS &gt; 7 — Considere avaliação clínica e necessidade de transferência.</div>
+    <div class="calc-result" id="c-val">RTS = —</div>
+    <div id="c-al" class="al al-b" style="font-size:12px;">Preencha GCS, PAS e FR para calcular.</div>
     <table class="rts-ref" id="rts-ref-c" style="margin-top: 10px;">
         <tr><th>Pts</th><th>GCS</th><th>PAS (mmHg)</th><th>FR (irpm)</th></tr>
         <tr data-pts="4" class="rts-hi"><td>4</td><td data-col="gcs">13–15</td><td data-col="pas">&gt; 89</td><td data-col="fr">10–29</td></tr>
@@ -727,15 +752,20 @@ body {
         <tr data-pts="0" class="rts-low"><td>0</td><td data-col="gcs">3</td><td data-col="pas">0</td><td data-col="fr">0</td></tr>
     </table>
 </div>
+</div><!-- end tab-rts -->
+<div class="calc-panel" id="tab-ic">
 <div class="calc">
     <div class="calc-label">Índice de Choque (FC / PAS)</div>
     <div class="calc-desc">Normal &lt; 0,7. ≥ 0,8 sugere necessidade de recursos.</div>
-    <div class="nrow"><span class="nrow-label">FC</span><input class="ni" type="number" inputmode="numeric" id="c2-fc" value="100" min="30" max="220" oninput="calcICx('c2')" aria-label="Frequência cardíaca"><span class="nrow-cod">bpm</span></div>
-    <div class="nrow"><span class="nrow-label">PAS</span><input class="ni" type="number" inputmode="numeric" id="c2-pas" value="120" min="30" max="260" oninput="calcICx('c2')" aria-label="Pressão arterial sistólica"><span class="nrow-cod">mmHg</span></div>
+    <div class="calc-inputs">
+    <div class="nrow"><span class="nrow-label">FC</span><input class="ni" type="number" inputmode="numeric" id="c2-fc" placeholder="bpm" min="30" max="220" oninput="calcICx('c2')" aria-label="Frequência cardíaca"><span class="nrow-cod" id="c2-cod-fc"></span></div>
+    <div class="nrow"><span class="nrow-label">PAS</span><input class="ni" type="number" inputmode="numeric" id="c2-pas" placeholder="mmHg" min="30" max="260" oninput="calcICx('c2')" aria-label="Pressão arterial sistólica"><span class="nrow-cod" id="c2-cod-pas"></span></div>
+    </div>
     <div class="calc-divider"></div>
-    <div class="calc-result" id="c2-val">IC = 0,83</div>
-    <div id="c2-al" class="al al-r" style="font-size:12px;">≥ 0,8 — Considere acionar banco de sangue e recursos adicionais (cirurgia, UTI, radiologia intervencionista).</div>
+    <div class="calc-result" id="c2-val">IC = —</div>
+    <div id="c2-al" class="al al-b" style="font-size:12px;">Preencha FC e PAS para calcular.</div>
 </div>
+</div><!-- end tab-ic -->
 <button class="btn btn-o" onclick="goBack()">Voltar</button>
 </div>
 
@@ -1000,6 +1030,7 @@ body {
 
 <button class="btn btn-o" onclick="goBack()">Voltar</button>
 </div>
+</div><!-- end s-atb -->
 
 <!-- MEDICAÇÕES -->
 <div class="scr" id="s-med">
@@ -1202,6 +1233,14 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// Calculator tabs
+function showCalcTab(tab) {
+    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('.calc-tab[onclick*="' + tab + '"]')?.classList.add('active');
+    document.getElementById('tab-' + tab)?.classList.add('active');
+}
+
 // R1 evaluation
 function evalR1() {
     let mec = false, inj = false, sv = false;
@@ -1286,12 +1325,11 @@ function resetApp() {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
-    // Resetar calculadoras para defaults
-    const defaults = { 'ic-fc': 100, 'ic-pas': 120, 'c2-fc': 100, 'c2-pas': 120, 'rts-gcs': 15, 'rts-pas': 120, 'rts-fr': 18, 'c-gcs': 15, 'c-pas': 120, 'c-fr': 18 };
-    for (const [id, val] of Object.entries(defaults)) {
+    // Limpar inputs das calculadoras
+    ['ic-fc', 'ic-pas', 'c2-fc', 'c2-pas', 'rts-gcs', 'rts-pas', 'rts-fr', 'c-gcs', 'c-pas', 'c-fr'].forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.value = val;
-    }
+        if (el) el.value = '';
+    });
     // Resetar população
     pop = 'a';
     document.querySelectorAll('.gest').forEach(g => g.style.display = 'none');
